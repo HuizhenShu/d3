@@ -1,7 +1,7 @@
 
 <html>
 <div id="chartContainer">
-  <h2>Correlation of baseball performace with height/weight/handedness </h2>
+  <h2>Correlation of baseball performance with handedness </h2>
     <style>
       h2 {
         margin-top: 20px;
@@ -18,26 +18,25 @@
     var svg = dimple.newSvg("#chartContainer", 1400, 600);
       
 
-
-        function  drew(data) {
+        //筛选击球率、全垒得分不为0的数值
+        function  sdraw(data) {
         data= data.filter(function(d) {
          return (d.HR >0 || d.avg >0 );
                     });
-        // Latest period only
-        //dimple.filterData(data, "Date", "01/12/2012");
-        // Create the chart
+
         var myChart = new dimple.chart(svg, data);
         myChart.setBounds(260, 30, 730, 530)
 
-        // Create a standard bubble of HR by Weight and Height
+        // Create a standard bubble of player by avg and HR
         // We are coloring by handedness as that will be the key in the legend
         var x = myChart.addMeasureAxis("x", "avg");
         var y = myChart.addMeasureAxis("y", "HR");
-        x.overrideMin = 0.05;
-        x.overrideMax = 0.35;
+        //设置坐标数值范围
+        x.overrideMin = 0;
+        x.overrideMax = 0.4;
         y.overrideMin = 0;
         y.overrideMax = 600;
-        myChart.addSeries(["name","weight", "height", "handedness"], dimple.plot.bubble);
+        myChart.addSeries(["name","weight", "height", "handedness"], dimple.plot.bubble);//
         var myLegend = myChart.addLegend(1010, 110, 60, 300, "Right");
         myChart.draw();
 
@@ -55,9 +54,10 @@
           .enter()
           .append("text")
             .attr("x", 1010)
-            .attr("y", function (d, i) { return 90 + i * 14; })
+            .attr("y", function (d, i) { return 70 + i * 24; })
+            .style("word-spacing","5px")
             .style("font-family", "sans-serif")
-            .style("font-size", "15px")
+            .style("font-size", "20px")
             .style("color", "Black")
             .text(function (d) { return d; });
 
@@ -101,7 +101,7 @@
                 d.HR = +d.HR;
                 d.avg = +d.avg;
             return d;
-            },drew);
+            },sdraw);
             
   </script>
 </div>
